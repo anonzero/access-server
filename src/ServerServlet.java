@@ -21,10 +21,10 @@ public class ServerServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        int PORT = 8080;
+        int PORT = 16520;
 
         try {
-            serverSocket = new ServerSocket(PORT, 100, InetAddress.getByName("localhost"));
+            serverSocket = new ServerSocket(PORT, 100, InetAddress.getByName("127.12.177.129"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,7 +33,7 @@ public class ServerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        PrintWriter out = resp.getWriter();
+        /*PrintWriter out = resp.getWriter();
         out.println("<html> \n"
                 + "<head> \n"
                 + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\"> \n"
@@ -46,7 +46,7 @@ public class ServerServlet extends HttpServlet {
                 + "</form> \n"
                 + "</body> \n"
                 + "</html>");
-
+        */
         command = req.getParameter("command");
         if (command.equals("login")) {
             new Thread(() -> {
@@ -61,6 +61,7 @@ public class ServerServlet extends HttpServlet {
         } else {
             handle(socket, req, resp);
         }
+        req.getRequestDispatcher("client.jsp").forward(req, resp);
     }
 
     @Override
