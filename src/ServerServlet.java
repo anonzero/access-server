@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -20,9 +21,10 @@ public class ServerServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        int PORT = 6205;
+        int PORT = 8080;
+
         try {
-            serverSocket = new ServerSocket(PORT);
+            serverSocket = new ServerSocket(PORT, 100, InetAddress.getByName("localhost"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,12 +138,13 @@ public class ServerServlet extends HttpServlet {
                         break;
                     default:
                         print += response + "\r\n";
+                        break;
                 }
             } while (!response.equals("true") && !response.equals("false") && !response.equals("invalid"));
 
             req.setAttribute("print", print);
             req.getRequestDispatcher("client.jsp").forward(req, res);
-        } catch (IOException | ServletException e) {
+        } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
     }
