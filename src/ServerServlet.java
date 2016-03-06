@@ -5,7 +5,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -53,7 +56,8 @@ public class ServerServlet extends HttpServlet {
                 while (true) {
                     try {
                         socket = serverSocket.accept();
-                    } catch (IOException e) {
+                        req.getRequestDispatcher("client.jsp").forward(req, resp);
+                    } catch (IOException | ServletException e) {
                         e.printStackTrace();
                     }
                 }
@@ -61,7 +65,6 @@ public class ServerServlet extends HttpServlet {
         } else {
             handle(socket, req, resp);
         }
-        req.getRequestDispatcher("client.jsp").forward(req, resp);
     }
 
     @Override
